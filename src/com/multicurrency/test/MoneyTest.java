@@ -124,5 +124,22 @@ public class MoneyTest {
         assertThat(three, is(equalTo(sum.addend)));
     }
 
+    @Test
+    public void shouldAddMultipleCurrencies() throws Exception {
+
+        //given
+        final Expression fiveBucks = Money.dollar(5);
+        final Expression tenFrancs = Money.franc(10);
+
+        final Bank bank = new Bank();
+        bank.addRate("CHF", "USD", 2);
+
+        //when
+        final Money result = bank.reduce(fiveBucks.plus(tenFrancs), "USD");
+
+        //then
+        assertThat(result,is(equalTo(Money.dollar(10))));
+    }
+
 
 }

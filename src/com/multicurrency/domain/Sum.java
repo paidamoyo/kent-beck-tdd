@@ -2,16 +2,26 @@ package com.multicurrency.domain;
 
 public class Sum implements Expression {
 
-    public Money augend;
-    public Money addend;
+    public Expression augend;
+    public Expression addend;
 
-    public Sum(Money augend, Money addend) {
+    public Sum(Expression augend, Expression addend) {
         this.augend = augend;
         this.addend = addend;
     }
 
     public Money reduce(Bank bank, String to) {
-        final int amount = addend.amount + augend.amount;
+        final int amount = addend.reduce(bank, to).amount + augend.reduce(bank, to).amount;
         return new Money(amount, to);
+    }
+
+    @Override
+    public Expression plus(Expression addend) {
+        return new Sum(this, addend);
+    }
+
+    @Override
+    public Expression times(int multiplier) {
+        return new Sum(augend.times(multiplier), addend.times(multiplier));
     }
 }

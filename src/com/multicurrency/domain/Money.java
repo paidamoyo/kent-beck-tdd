@@ -1,5 +1,6 @@
 package com.multicurrency.domain;
 
+
 public class Money implements Expression {
 
     public int amount;
@@ -11,6 +12,7 @@ public class Money implements Expression {
         return this.currency;
     }
 
+    @Override
     public Money times(int multiplier) {
         return new Money(this.amount * multiplier, this.currency);
     }
@@ -60,8 +62,7 @@ public class Money implements Expression {
     }
 
 
-    public Expression plus(Money addend) {
-
+    public Expression plus(Expression addend) {
         return new Sum(this, addend);
     }
 
